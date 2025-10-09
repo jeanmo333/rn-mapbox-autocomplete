@@ -1,0 +1,55 @@
+import type { ImageSourcePropType } from 'react-native';
+
+export interface MapboxFeature {
+  id: string;
+  place_name: string;
+  center: [number, number]; // [lng, lat]
+  context?: Array<{ id: string; text: string }>;
+  properties?: {
+    category?: string;
+  };
+}
+
+export interface MapboxAutocompleteProps {
+  accessToken: string;
+  placeholder?: string;
+  language?: string;
+  types?: string[];
+  limit?: number;
+  onLocationSelect?: (location: MapboxFeature) => void;
+  onSearchChange?: (query: string) => void;
+  style?: object;
+  inputStyle?: object;
+  resultsContainerStyle?: object;
+  resultItemStyle?: object;
+  showPoweredBy?: boolean;
+  maxHeight?: number;
+  showLocationIcon?: boolean;
+  locationIconSource?: ImageSourcePropType;
+  locationIconStyle?: object;
+}
+
+export const searchMapboxPlaces = async (
+  query: string,
+  accessToken: string,
+  language: string = 'en',
+  types: string[] = [],
+  limit: number = 5
+): Promise<MapboxFeature[]> => {
+  if (query.length < 2) return [];
+
+  try {
+    const typesParam = types.length > 0 ? `&types=${types.join(',')}` : '';
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+      query
+    )}.json?access_token=${accessToken}&limit=${limit}&language=${language}${typesParam}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    return data.features || [];
+  } catch (error) {
+    console.error('Mapbox search error:', error);
+    return [];
+  }
+};
