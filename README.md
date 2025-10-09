@@ -88,6 +88,14 @@ export default function App() {
         inputStyle={styles.input}
         resultsContainerStyle={styles.results}
         resultItemStyle={styles.resultItem}
+        resultItemTextStyle={}
+        loadingContainerStyle={}
+        loadingTextStyle={}
+        poweredByContainerStyle={}
+        poweredByRowStyle={}
+        poweredByTextStyle={}
+        poweredByBoldTextStyle={}
+        mapboxLogoStyle={}
       />
     </View>
   );
@@ -144,6 +152,14 @@ const styles = StyleSheet.create({
 | `resultItemStyle` | `ViewStyle` | Individual result item style |
 | `locationIconSource` | `ImageSourcePropType` | Custom location icon |
 | `locationIconStyle` | `ImageStyle` | Location icon style |
+| `loadingContainerStyle` | `ViewStyle` | Style for the loading container |
+| `loadingTextStyle` | `TextStyle` | Style for the loading text |
+| `poweredByContainerStyle` | `ViewStyle` | Style for the "Powered by Mapbox" container |
+| `poweredByRowStyle` | `ViewStyle` | Style for the "Powered by Mapbox" row |
+| `poweredByTextStyle` | `TextStyle` | Style for the "Powered by" text |
+| `poweredByBoldTextStyle` | `TextStyle` | Style for the "Mapbox" bold text |
+| `mapboxLogoStyle` | `ImageStyle` | Style for the Mapbox logo |
+| `resultItemTextStyle` | `TextStyle` | Style for the "result Item by" text |
 
 ### Types
 

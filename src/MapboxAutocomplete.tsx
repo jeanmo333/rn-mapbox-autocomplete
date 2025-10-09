@@ -31,6 +31,15 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
   showLocationIcon = true,
   locationIconSource,
   locationIconStyle,
+
+  resultItemTextStyle,
+  loadingContainerStyle,
+  loadingTextStyle,
+  poweredByContainerStyle,
+  poweredByRowStyle,
+  poweredByTextStyle,
+  poweredByBoldTextStyle,
+  mapboxLogoStyle,
 }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<MapboxFeature[]>([]);
@@ -90,7 +99,9 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
           style={[styles.locationIcon, locationIconStyle]}
         />
       )}
-      <Text style={styles.resultItemText}>{item.place_name}</Text>
+      <Text style={[styles.resultItemText, resultItemTextStyle]}>
+        {item.place_name}
+      </Text>
     </TouchableOpacity>
   );
 
@@ -114,8 +125,10 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
           ]}
         >
           {isLoading ? (
-            <View style={styles.loadingContainer}>
-              <Text style={styles.loadingText}>Searching...</Text>
+            <View style={[styles.loadingContainer, loadingContainerStyle]}>
+              <Text style={[styles.loadingText, loadingTextStyle]}>
+                Searching...
+              </Text>
             </View>
           ) : (
             <>
@@ -127,15 +140,21 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
                 showsVerticalScrollIndicator={false}
               />
               {showPoweredBy && (
-                <View style={styles.poweredByContainer}>
-                  <View style={styles.poweredByRow}>
-                    <Text style={styles.poweredByText}>
+                <View
+                  style={[styles.poweredByContainer, poweredByContainerStyle]}
+                >
+                  <View style={[styles.poweredByRow, poweredByRowStyle]}>
+                    <Text style={[styles.poweredByText, poweredByTextStyle]}>
                       Powered by{' '}
-                      <Text style={styles.poweredByBold}>Mapbox</Text>
+                      <Text
+                        style={[styles.poweredByBold, poweredByBoldTextStyle]}
+                      >
+                        Mapbox
+                      </Text>
                     </Text>
                     <Image
                       source={require('./assets/logo-mapbox.jpg')}
-                      style={styles.mapboxLogo}
+                      style={[styles.mapboxLogo, mapboxLogoStyle]}
                     />
                   </View>
                 </View>

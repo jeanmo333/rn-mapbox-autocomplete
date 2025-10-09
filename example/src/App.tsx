@@ -2,7 +2,6 @@ import { StyleSheet, View, Text, Alert } from 'react-native';
 import MapboxAutocomplete from 'rn-mapbox-autocomplete';
 import type { MapboxFeature } from 'rn-mapbox-autocomplete';
 
-// Para Expo, usa process.env con el prefijo EXPO_PUBLIC_
 const MAPBOX_ACCESS_TOKEN = process.env.EXPO_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
 
 export default function App() {
@@ -28,7 +27,6 @@ export default function App() {
           accessToken={MAPBOX_ACCESS_TOKEN}
           placeholder="Search for places..."
           language="en"
-          // locationIconSource={require('./assets/logo-mapbox.jpg')}
           onLocationSelect={handleLocationSelect}
           onSearchChange={handleSearchChange}
           maxHeight={250}
@@ -39,6 +37,8 @@ export default function App() {
         <Text style={styles.subtitle}>Custom Style</Text>
         <MapboxAutocomplete
           accessToken={MAPBOX_ACCESS_TOKEN}
+          // resultItemTextStyle={{ color: 'blue'}}
+          // locationIconSource={require('./assets/logo-mapbox.jpg')}
           placeholder="Buscar ubicación..."
           language="es"
           types={['country', 'region', 'place']}

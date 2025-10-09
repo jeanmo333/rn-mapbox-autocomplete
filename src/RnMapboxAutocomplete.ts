@@ -27,6 +27,15 @@ export interface MapboxAutocompleteProps {
   showLocationIcon?: boolean;
   locationIconSource?: ImageSourcePropType;
   locationIconStyle?: object;
+
+  resultItemTextStyle?: object;
+  loadingContainerStyle?: object;
+  loadingTextStyle?: object;
+  poweredByContainerStyle?: object;
+  poweredByRowStyle?: object;
+  poweredByTextStyle?: object;
+  poweredByBoldTextStyle?: object;
+  mapboxLogoStyle?: object;
 }
 
 export const searchMapboxPlaces = async (
