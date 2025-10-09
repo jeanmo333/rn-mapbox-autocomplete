@@ -2,8 +2,8 @@ import { StyleSheet, View, Text, Alert } from 'react-native';
 import MapboxAutocomplete from 'rn-mapbox-autocomplete';
 import type { MapboxFeature } from 'rn-mapbox-autocomplete';
 
-// Reemplaza con tu token real de Mapbox
-const MAPBOX_ACCESS_TOKEN = '';
+// Para Expo, usa process.env con el prefijo EXPO_PUBLIC_
+const MAPBOX_ACCESS_TOKEN = process.env.EXPO_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
 
 export default function App() {
   const handleLocationSelect = (location: MapboxFeature) => {

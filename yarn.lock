@@ -1406,7 +1406,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-env@npm:^7.25.2":
+"@babel/preset-env@npm:^7.25.0, @babel/preset-env@npm:^7.25.2":
   version: 7.28.3
   resolution: "@babel/preset-env@npm:7.28.3"
   dependencies:
@@ -11304,6 +11304,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-config@npm:^1.5.9":
+  version: 1.5.9
+  resolution: "react-native-config@npm:1.5.9"
+  dependencies:
+    "@babel/core": ^7.25.2
+    "@babel/preset-env": ^7.25.0
+    "@babel/preset-react": ^7.24.7
+    babel-jest: ^29.7.0
+  peerDependencies:
+    react-native-windows: ">=0.61"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: 4eb7ca05fbe3fad53119d487f6a35e965e4103fe19cd6db128be5e91c16c557b1b5ee3baeb3ec86cc2b254177d9cf1b301d9ee7253aa98f07609c14bc5b937a2
+  languageName: node
+  linkType: hard
+
 "react-native-is-edge-to-edge@npm:^1.2.1":
   version: 1.2.1
   resolution: "react-native-is-edge-to-edge@npm:1.2.1"
@@ -11800,6 +11817,7 @@ __metadata:
     react-dom: 19.1.0
     react-native: 0.81.4
     react-native-builder-bob: ^0.40.13
+    react-native-config: ^1.5.9
     react-native-monorepo-config: ^0.1.9
     react-native-web: ~0.21.0
   languageName: unknown
