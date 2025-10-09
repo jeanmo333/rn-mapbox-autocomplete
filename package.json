@@ -1,6 +1,6 @@
 {
   "name": "rn-mapbox-autocomplete",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A powerful and customizable Mapbox Places autocomplete component for React Native applications",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
