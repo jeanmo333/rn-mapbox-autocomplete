@@ -178,9 +178,9 @@ const styles = StyleSheet.create({
 });
 ```
 
-## React Native Paper Integration
+## React Native Paper Integration or Others input libreries
 
-You can easily integrate with React Native Paper components or Others for a Material Design look:
+You can easily integrate with React Native Paper components or Others input libreries for a Material Design look:
 
 ```tsx
 import React from 'react';
