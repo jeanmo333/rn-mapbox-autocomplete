@@ -6,6 +6,7 @@ A powerful and customizable Mapbox Places autocomplete component for React Nativ
 
 - 🔍 Real-time place search using Mapbox Geocoding API
 - 🎨 Fully customizable styling
+- 🔧 Custom input component support
 - 🌍 Multi-language support
 - 📱 Cross-platform (iOS & Android)
 - ⚡ TypeScript support
@@ -125,6 +126,118 @@ const styles = StyleSheet.create({
 });
 ```
 
+## Custom Input Component
+
+You can provide your own custom input component for maximum flexibility:
+
+```tsx
+import React from 'react';
+import { View, TextInput, StyleSheet } from 'react-native';
+import MapboxAutocomplete, { CustomInputProps } from 'rn-mapbox-autocomplete';
+
+export default function App() {
+  const CustomSearchInput = ({ value, onChangeText, placeholder }: CustomInputProps) => (
+    <TextInput
+      style={styles.customInput}
+      value={value}
+      onChangeText={onChangeText}
+      placeholder={placeholder}
+      autoCapitalize="none"
+      autoCorrect={false}
+    />
+  );
+
+  return (
+    <View style={styles.container}>
+      <MapboxAutocomplete
+        accessToken="YOUR_MAPBOX_ACCESS_TOKEN"
+        placeholder="Enter location..."
+        customInput={CustomSearchInput}
+        onLocationSelect={(location) => {
+          console.log('Selected:', location.place_name);
+        }}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  customInput: {
+    height: 50,
+    borderColor: '#ff9800',
+    borderWidth: 2,
+    borderRadius: 25,
+    paddingHorizontal: 20,
+    fontSize: 16,
+    backgroundColor: '#fff3e0',
+  },
+});
+```
+
+## React Native Paper Integration
+
+You can easily integrate with React Native Paper components or Others for a Material Design look:
+
+```tsx
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { PaperProvider, TextInput as TextInputPaper } from 'react-native-paper';
+import MapboxAutocomplete, { CustomInputProps } from 'rn-mapbox-autocomplete';
+
+export default function App() {
+  return (
+    <PaperProvider>
+      <View style={styles.container}>
+        <MapboxAutocomplete
+          accessToken="YOUR_MAPBOX_ACCESS_TOKEN"
+          placeholder="Search location..."
+          customInput={({ value, onChangeText, placeholder }: CustomInputProps) => (
+            <TextInputPaper
+              mode="outlined"
+              label="Search Location"
+              value={value}
+              onChangeText={onChangeText}
+              placeholder={placeholder}
+              autoCapitalize="none"
+              autoCorrect={false}
+              style={styles.paperInput}
+            />
+          )}
+          onLocationSelect={(location) => {
+            console.log('Selected:', location.place_name);
+          }}
+          resultsContainerStyle={styles.resultsContainer}
+          maxHeight={200}
+        />
+      </View>
+    </PaperProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  paperInput: {
+    backgroundColor: 'white',
+  },
+  resultsContainer: {
+    marginTop: 5,
+  },
+});
+```
+
+### Important Notes for React Native Paper
+
+1. **PaperProvider Required**: Always wrap your app with `PaperProvider` for proper theming
+2. **Background Color**: Set `backgroundColor: 'white'` on the TextInput for proper outline visibility
+3. **Results Container Margin**: Add `marginTop` to `resultsContainerStyle` for proper spacing with outlined inputs
+
 ## API Reference
 
 ### Props
@@ -139,6 +252,7 @@ const styles = StyleSheet.create({
 | `maxHeight` | `number` | `300` | Maximum height of results container |
 | `showLocationIcon` | `boolean` | `true` | Show location icon in results |
 | `showPoweredBy` | `boolean` | `true` | Show "Powered by Mapbox" attribution |
+| `customInput` | `(props: CustomInputProps) => ReactElement` | `undefined` | Custom input component renderer |
 | `onLocationSelect` | `(location: MapboxFeature) => void` | `undefined` | Callback when location is selected |
 | `onSearchChange` | `(query: string) => void` | `undefined` | Callback when search query changes |
 
@@ -172,6 +286,12 @@ interface MapboxFeature {
   properties?: {
     category?: string;
   };
+}
+
+interface CustomInputProps {
+  value: string;
+  onChangeText: (text: string) => void;
+  placeholder?: string;
 }
 ```
 

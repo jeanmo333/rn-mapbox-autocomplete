@@ -31,6 +31,7 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
   showLocationIcon = true,
   locationIconSource,
   locationIconStyle,
+  customInput,
 
   resultItemTextStyle,
   loadingContainerStyle,
@@ -105,8 +106,16 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
     </TouchableOpacity>
   );
 
-  return (
-    <View style={[styles.container, style]}>
+  const renderInput = () => {
+    if (customInput) {
+      return customInput({
+        value: query,
+        onChangeText: fetchPlaces,
+        placeholder,
+      });
+    }
+
+    return (
       <TextInput
         style={[styles.input, inputStyle]}
         placeholder={placeholder}
@@ -115,6 +124,12 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
         autoCapitalize="none"
         autoCorrect={false}
       />
+    );
+  };
+
+  return (
+    <View style={[styles.container, style]}>
+      {renderInput()}
 
       {(results.length > 0 || isLoading) && (
         <View

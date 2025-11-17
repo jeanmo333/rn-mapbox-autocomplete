@@ -1,4 +1,5 @@
 import type { ImageSourcePropType } from 'react-native';
+import type { ReactElement } from 'react';
 
 export interface MapboxFeature {
   id: string;
@@ -8,6 +9,12 @@ export interface MapboxFeature {
   properties?: {
     category?: string;
   };
+}
+
+export interface CustomInputProps {
+  value: string;
+  onChangeText: (text: string) => void;
+  placeholder?: string;
 }
 
 export interface MapboxAutocompleteProps {
@@ -27,6 +34,7 @@ export interface MapboxAutocompleteProps {
   showLocationIcon?: boolean;
   locationIconSource?: ImageSourcePropType;
   locationIconStyle?: object;
+  customInput?: (props: CustomInputProps) => ReactElement;
 
   resultItemTextStyle?: object;
   loadingContainerStyle?: object;
