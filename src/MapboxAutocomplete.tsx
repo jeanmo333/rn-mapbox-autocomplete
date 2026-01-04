@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -20,6 +20,8 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
   language = 'en',
   types = ['country', 'region', 'place'],
   limit = 5,
+  country,
+  debounceDelay = 500,
   onLocationSelect,
   onSearchChange,
   style,
@@ -45,13 +47,12 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<MapboxFeature[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const fetchPlaces = async (text: string) => {
-    setQuery(text);
-    onSearchChange?.(text);
-
     if (text.length < 2) {
       setResults([]);
+      setIsLoading(false);
       return;
     }
 
@@ -62,7 +63,8 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
         accessToken,
         language,
         types,
-        limit
+        limit,
+        country
       );
       setResults(searchResults);
     } catch (error) {
@@ -72,6 +74,34 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
       setIsLoading(false);
     }
   };
+
+  const handleInputChange = (text: string) => {
+    setQuery(text);
+    onSearchChange?.(text);
+
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+
+    if (text.length < 2) {
+      setResults([]);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    debounceTimeout.current = setTimeout(() => {
+      fetchPlaces(text);
+    }, debounceDelay);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+    };
+  }, []);
 
   const handleLocationSelect = (item: MapboxFeature) => {
     setQuery(item.place_name);
@@ -110,7 +140,7 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
     if (customInput) {
       return customInput({
         value: query,
-        onChangeText: fetchPlaces,
+        onChangeText: handleInputChange,
         placeholder,
       });
     }
@@ -120,7 +150,7 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
         style={[styles.input, inputStyle]}
         placeholder={placeholder}
         value={query}
-        onChangeText={fetchPlaces}
+        onChangeText={handleInputChange}
         autoCapitalize="none"
         autoCorrect={false}
       />

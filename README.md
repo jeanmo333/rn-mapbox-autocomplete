@@ -81,6 +81,8 @@ export default function App() {
         language="es"
         types={['country', 'region', 'place']}
         limit={8}
+        country="CL" // Filter results to Chile only
+        debounceDelay={500} // Wait 500ms after user stops typing
         maxHeight={250}
         showLocationIcon={true}
         showPoweredBy={true}
@@ -89,14 +91,14 @@ export default function App() {
         inputStyle={styles.input}
         resultsContainerStyle={styles.results}
         resultItemStyle={styles.resultItem}
-        resultItemTextStyle={}
-        loadingContainerStyle={}
-        loadingTextStyle={}
-        poweredByContainerStyle={}
-        poweredByRowStyle={}
-        poweredByTextStyle={}
-        poweredByBoldTextStyle={}
-        mapboxLogoStyle={}
+        resultItemTextStyle={styles.resultItemText}
+        loadingContainerStyle={styles.loadingContainer}
+        loadingTextStyle={styles.loadingText}
+        poweredByContainerStyle={styles.poweredByContainer}
+        poweredByRowStyle={styles.poweredByRow}
+        poweredByTextStyle={styles.poweredByText}
+        poweredByBoldTextStyle={styles.poweredByBold}
+        mapboxLogoStyle={styles.mapboxLogo}
       />
     </View>
   );
@@ -122,6 +124,32 @@ const styles = StyleSheet.create({
   },
   resultItem: {
     paddingVertical: 15,
+  },
+  resultItemText: {
+    fontSize: 15,
+    color: '#333',
+  },
+  loadingContainer: {
+    padding: 20,
+  },
+  loadingText: {
+    color: '#2196f3',
+  },
+  poweredByContainer: {
+    padding: 10,
+  },
+  poweredByRow: {
+    flexDirection: 'row',
+  },
+  poweredByText: {
+    fontSize: 12,
+  },
+  poweredByBold: {
+    fontWeight: 'bold',
+  },
+  mapboxLogo: {
+    width: 18,
+    height: 18,
   },
 });
 ```
@@ -249,6 +277,8 @@ const styles = StyleSheet.create({
 | `language` | `string` | `"en"` | Search language (ISO 639-1) |
 | `types` | `string[]` | `["country", "region", "place"]` | Place types to search |
 | `limit` | `number` | `5` | Maximum number of results |
+| `country` | `string` | `undefined` | Filter results to specific country (ISO 3166-1 alpha-2 code, e.g., "CL", "US") |
+| `debounceDelay` | `number` | `500` | Delay in milliseconds before search request (optimizes API calls) |
 | `maxHeight` | `number` | `300` | Maximum height of results container |
 | `showLocationIcon` | `boolean` | `true` | Show location icon in results |
 | `showPoweredBy` | `boolean` | `true` | Show "Powered by Mapbox" attribution |
@@ -307,6 +337,98 @@ interface CustomInputProps {
 - `address` - Street addresses
 - `poi` - Points of interest
 
+## Country-Specific Search
+
+You can filter search results to a specific country using the `country` prop with ISO 3166-1 alpha-2 country codes. This is particularly useful for searching specific addresses with street numbers:
+
+```tsx
+import React from 'react';
+import { View } from 'react-native';
+import MapboxAutocomplete from 'rn-mapbox-autocomplete';
+
+export default function ChileAddressSearch() {
+  return (
+    <View style={{ flex: 1, padding: 20 }}>
+      <MapboxAutocomplete
+        accessToken="YOUR_MAPBOX_ACCESS_TOKEN"
+        placeholder="Buscar dirección en Chile..."
+        language="es"
+        country="CL" // Search only in Chile
+        types={['address']} // Get specific addresses with street numbers
+        onLocationSelect={(location) => {
+          console.log('Address:', location.place_name);
+          console.log('Coordinates:', location.center);
+        }}
+      />
+    </View>
+  );
+}
+```
+
+### Common Country Codes
+
+- `CL` - Chile
+- `AR` - Argentina
+- `MX` - Mexico
+- `US` - United States
+- `ES` - Spain
+- `BR` - Brazil
+- `CO` - Colombia
+- `PE` - Peru
+
+### Example: Address Search with Street Numbers
+
+```tsx
+// Search for addresses in Chile with street numbers
+<MapboxAutocomplete
+  accessToken="YOUR_MAPBOX_ACCESS_TOKEN"
+  country="CL"
+  types={['address']}
+  placeholder="Ej: Avenida Venus 123"
+  language="es"
+  onLocationSelect={(location) => {
+    // Will return specific addresses like:
+    // "Avenida Venus 123, Providencia, Santiago"
+    console.log(location.place_name);
+  }}
+/>
+```
+
+## Search Optimization (Debouncing)
+
+The component includes built-in debouncing to reduce API calls. You can customize the delay using the `debounceDelay` prop:
+
+```tsx
+// Fast response (more API calls)
+<MapboxAutocomplete
+  accessToken="YOUR_MAPBOX_ACCESS_TOKEN"
+  debounceDelay={200}
+/>
+
+// Default (balanced)
+<MapboxAutocomplete
+  accessToken="YOUR_MAPBOX_ACCESS_TOKEN"
+  debounceDelay={500} // or omit for default
+/>
+
+// Slower response (fewer API calls)
+<MapboxAutocomplete
+  accessToken="YOUR_MAPBOX_ACCESS_TOKEN"
+  debounceDelay={1000}
+/>
+
+// No debounce (not recommended - many API calls)
+<MapboxAutocomplete
+  accessToken="YOUR_MAPBOX_ACCESS_TOKEN"
+  debounceDelay={0}
+/>
+```
+
+**Recommended values:**
+- `200-300ms` - Fast and responsive, good for most use cases
+- `500ms` - Default, balanced between UX and API optimization
+- `1000ms+` - Slower, but significantly reduces API calls (consider for high-traffic apps)
+
 ## Utility Functions
 
 You can also use the search function directly:
@@ -316,11 +438,25 @@ import { searchMapboxPlaces } from 'rn-mapbox-autocomplete';
 
 const searchPlaces = async () => {
   const results = await searchMapboxPlaces(
-    'New York',
+    'New York',           // query
+    'YOUR_ACCESS_TOKEN',  // accessToken
+    'en',                 // language
+    ['place'],            // types
+    5,                    // limit
+    'US'                  // country (optional)
+  );
+  console.log(results);
+};
+
+// Example: Search for addresses in Chile
+const searchChileAddresses = async () => {
+  const results = await searchMapboxPlaces(
+    'Avenida Venus',
     'YOUR_ACCESS_TOKEN',
-    'en',
-    ['place'],
-    5
+    'es',
+    ['address'],
+    10,
+    'CL'
   );
   console.log(results);
 };

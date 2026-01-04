@@ -23,6 +23,8 @@ export interface MapboxAutocompleteProps {
   language?: string;
   types?: string[];
   limit?: number;
+  country?: string;
+  debounceDelay?: number;
   onLocationSelect?: (location: MapboxFeature) => void;
   onSearchChange?: (query: string) => void;
   style?: object;
@@ -51,15 +53,17 @@ export const searchMapboxPlaces = async (
   accessToken: string,
   language: string = 'en',
   types: string[] = [],
-  limit: number = 5
+  limit: number = 5,
+  country?: string
 ): Promise<MapboxFeature[]> => {
   if (query.length < 2) return [];
 
   try {
     const typesParam = types.length > 0 ? `&types=${types.join(',')}` : '';
+    const countryParam = country ? `&country=${country}` : '';
     const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
       query
-    )}.json?access_token=${accessToken}&limit=${limit}&language=${language}${typesParam}`;
+    )}.json?access_token=${accessToken}&limit=${limit}&language=${language}${typesParam}${countryParam}`;
 
     const response = await fetch(url);
     const data = await response.json();

@@ -41,15 +41,15 @@ const PaperTextInput = ({
 
 export default function App() {
   const handleLocationSelect = (location: MapboxFeature) => {
-    console.log('Selected location:', location);
+    console.log('Selected location:', JSON.stringify(location, null, 2));
     Alert.alert(
       'Location Selected',
       `${location.place_name}\nLat: ${location.center[1]}\nLng: ${location.center[0]}`
     );
   };
 
-  const handleSearchChange = (query: string) => {
-    console.log('Search query:', query);
+  const handleSearchChange = (_query: string) => {
+    // console.log('Search query:', query);
   };
 
   return (
@@ -61,8 +61,11 @@ export default function App() {
           <Text style={styles.subtitle}>Basic Usage</Text>
           <MapboxAutocomplete
             accessToken={MAPBOX_ACCESS_TOKEN}
+            debounceDelay={1000}
+            country="CL"
+            types={['address']}
             placeholder="Search for places..."
-            language="en"
+            language="es"
             onLocationSelect={handleLocationSelect}
             onSearchChange={handleSearchChange}
             maxHeight={250}
@@ -73,9 +76,11 @@ export default function App() {
           <Text style={styles.subtitle}>Custom Style</Text>
           <MapboxAutocomplete
             accessToken={MAPBOX_ACCESS_TOKEN}
+            country="CL"
+            types={['address']}
             placeholder="Buscar ubicación..."
             language="es"
-            types={['country', 'region', 'place']}
+            // types={['country', 'region', 'place']}
             limit={5}
             onLocationSelect={handleLocationSelect}
             inputStyle={styles.customInput}
@@ -88,6 +93,8 @@ export default function App() {
           <Text style={styles.subtitle}>Custom Input Component</Text>
           <MapboxAutocomplete
             accessToken={MAPBOX_ACCESS_TOKEN}
+            country="CL"
+            types={['address']}
             placeholder="Custom input placeholder..."
             onLocationSelect={handleLocationSelect}
             customInput={CustomTextInput}
@@ -101,6 +108,8 @@ export default function App() {
           </Text>
           <MapboxAutocomplete
             accessToken={MAPBOX_ACCESS_TOKEN}
+            country="CL"
+            types={['address']}
             placeholder="Placeholder paper"
             onLocationSelect={handleLocationSelect}
             resultsContainerStyle={styles.customResultsPaper}
