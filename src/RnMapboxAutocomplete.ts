@@ -41,6 +41,7 @@ export interface MapboxAutocompleteProps {
   resultItemTextStyle?: object;
   loadingContainerStyle?: object;
   loadingTextStyle?: object;
+  loadingText?: string;
   poweredByContainerStyle?: object;
   poweredByRowStyle?: object;
   poweredByTextStyle?: object;

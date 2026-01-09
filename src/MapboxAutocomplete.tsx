@@ -38,6 +38,7 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
   resultItemTextStyle,
   loadingContainerStyle,
   loadingTextStyle,
+  loadingText = 'Searching...',
   poweredByContainerStyle,
   poweredByRowStyle,
   poweredByTextStyle,
@@ -172,7 +173,7 @@ const MapboxAutocomplete: React.FC<MapboxAutocompleteProps> = ({
           {isLoading ? (
             <View style={[styles.loadingContainer, loadingContainerStyle]}>
               <Text style={[styles.loadingText, loadingTextStyle]}>
-                Searching...
+                {loadingText}
               </Text>
             </View>
           ) : (

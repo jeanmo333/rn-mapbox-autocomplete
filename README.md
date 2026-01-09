@@ -92,6 +92,7 @@ export default function App() {
         resultsContainerStyle={styles.results}
         resultItemStyle={styles.resultItem}
         resultItemTextStyle={styles.resultItemText}
+        loadingText="Searching for locations..."
         loadingContainerStyle={styles.loadingContainer}
         loadingTextStyle={styles.loadingText}
         poweredByContainerStyle={styles.poweredByContainer}
@@ -282,6 +283,7 @@ const styles = StyleSheet.create({
 | `maxHeight` | `number` | `300` | Maximum height of results container |
 | `showLocationIcon` | `boolean` | `true` | Show location icon in results |
 | `showPoweredBy` | `boolean` | `true` | Show "Powered by Mapbox" attribution |
+| `loadingText` | `string` | `"Searching..."` | Custom text to display while searching |
 | `customInput` | `(props: CustomInputProps) => ReactElement` | `undefined` | Custom input component renderer |
 | `onLocationSelect` | `(location: MapboxFeature) => void` | `undefined` | Callback when location is selected |
 | `onSearchChange` | `(query: string) => void` | `undefined` | Callback when search query changes |

@@ -61,11 +61,12 @@ export default function App() {
           <Text style={styles.subtitle}>Basic Usage</Text>
           <MapboxAutocomplete
             accessToken={MAPBOX_ACCESS_TOKEN}
+            loadingText="Buscando ubicaciones..."
             debounceDelay={1000}
-            country="US"
+            country="CL"
             types={['address']}
             placeholder="Search for places..."
-            language="en"
+            language="es"
             onLocationSelect={handleLocationSelect}
             onSearchChange={handleSearchChange}
             maxHeight={250}
